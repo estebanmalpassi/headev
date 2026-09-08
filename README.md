@@ -1,133 +1,143 @@
-# HANDEV — App
+<div align="center">
 
-Proyecto completo y corrible: Vite + React + Tailwind + React Router. Las 5 pantallas ya están conectadas por rutas reales.
+# Headev
 
-## Requisitos
+### De una idea a un proyecto real
 
-- **Node.js 18 o superior** instalado en tu computadora. Si no lo tenés: https://nodejs.org (bajá la versión LTS).
-- Para chequear que lo tenés, abrí una terminal y corré:
+Un agente de Inteligencia Artificial que transforma tu idea en un proyecto de software concreto.
+
+</div>
+
+---
+
+## ✨ ¿Qué es Headev?
+
+¿Tenés una idea pero no sabés cómo convertirla en una página web, aplicación o sistema?
+
+**Headev** conversa con vos y te hace las preguntas necesarias para entender qué querés crear, cómo debería funcionar, qué características necesitás y cuál es el objetivo de tu proyecto. A medida que respondés, Headev organiza toda la información y genera una definición clara de lo que querés desarrollar.
+
+No necesitás saber programación ni explicar técnicamente cómo construir tu proyecto. **Vos contás qué necesitás. Headev hace las preguntas. Un desarrollador se encarga de convertirlo en realidad.**
+
+## 🚀 ¿Cómo funciona?
+
+| Paso | Descripción |
+|---|---|
+| 1️⃣ **Contale tu idea** | Explicale a Headev qué querés crear, aunque no tengas todos los detalles definidos. |
+| 2️⃣ **Respondé las preguntas** | El agente de IA te hará preguntas específicas para entender tu proyecto. |
+| 3️⃣ **Se define el proyecto** | Headev estructura los requerimientos y características de tu proyecto. |
+| 4️⃣ **Se prepara el desarrollo** | La información queda lista para que un desarrollador la analice. |
+| 5️⃣ **Realizás el pago** | Aprobás el proyecto, pagás, y comienza el desarrollo. |
+
+---
+
+## 🛠️ Stack técnico
+
+Proyecto completo y corrible: **Vite + React + Tailwind + React Router**, con backend propio en **Express** conectado a **Claude (Anthropic API)**.
+
+### Requisitos
+
+- **Node.js 18 o superior**. Si no lo tenés: [nodejs.org](https://nodejs.org) (versión LTS).
+- Verificá tu instalación:
   ```bash
   node -v
   npm -v
   ```
-  Si te devuelve un número de versión en ambos, estás listo.
 
-## Cómo correrlo (paso a paso)
+### Instalación y ejecución
 
-1. **Descomprimí** este proyecto en una carpeta de tu computadora.
-2. Abrí una terminal **dentro de esa carpeta** (`cd ruta/a/handev-app`).
-3. Instalá las dependencias:
-   ```bash
-   npm install
-   ```
-   Esto va a tardar un minuto o dos la primera vez — está bajando React, Tailwind, el router, los íconos y el SDK de Anthropic (Claude).
-4. Configurá el `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-   Abrí `.env` y completá:
-   - `ANTHROPIC_API_KEY`: tu key de https://console.anthropic.com/ (creá una cuenta si no tenés). Sin esto, el chat de `/discovery` va a mostrar un error de "API key inválida o faltante".
-   - `JWT_SECRET`: cualquier texto largo al azar (para firmar las sesiones). Generá uno con `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`.
-   - `HANDEV_ADMIN_EMAIL` / `HANDEV_ADMIN_PASSWORD`: tu login como developer. Con esto entrás a `/dashboard` — se crea solo la primera vez que arrancás el server.
-5. Levantá todo (servidor de la API + frontend, en un solo comando):
-   ```bash
-   npm run dev
-   ```
-6. La terminal te va a mostrar algo como:
-   ```
-   [server] ✅ Servidor de HANDEV AI corriendo en http://localhost:8787
-   [client] Local:   http://localhost:5173/
-   ```
-   Abrí `http://localhost:5173/` en el navegador. Ahí está la app corriendo.
+```bash
+# 1. Instalar dependencias
+npm install
 
-Cada vez que edites un archivo de `src/` y lo guardes, la página se actualiza sola (hot reload). Si editás `server/index.js`, reiniciá `npm run dev` (Ctrl+C y volver a correrlo).
+# 2. Configurar variables de entorno
+cp .env.example .env
+```
 
-## Qué vas a ver
+Completá en `.env`:
+- **`ANTHROPIC_API_KEY`** — tu key de [console.anthropic.com](https://console.anthropic.com/). Sin esto, el chat de `/discovery` mostrará un error.
+- **`JWT_SECRET`** — un texto largo al azar. Generalo con:
+  ```bash
+  node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+  ```
+- **`HANDEV_ADMIN_EMAIL`** / **`HANDEV_ADMIN_PASSWORD`** — tu login como developer (se crea solo al arrancar el server).
 
-Arriba de todo hay una **barra flotante negra** con 5 botones (Welcome / HANDEV / Payment / Client / Dev) para saltar entre pantallas mientras probás. Es solo para desarrollo — no aparece en producción (`import.meta.env.DEV`, ver `src/App.jsx`, componente `DevNav`).
+```bash
+# 3. Levantar frontend + backend juntos
+npm run dev
+```
 
-Las rutas reales son:
+La terminal mostrará:
+```
+[server] ✅ Servidor de HANDEV AI corriendo en http://localhost:8787
+[client] Local:   http://localhost:5173/
+```
+
+Abrí `http://localhost:5173/` en el navegador. 🎉
+
+> Al editar archivos en `src/`, la página se actualiza sola (hot reload). Si editás `server/index.js`, reiniciá con Ctrl+C y `npm run dev` de nuevo.
+
+### Rutas de la app
 
 | Ruta | Pantalla | Acceso |
 |---|---|---|
-| `/` | Welcome (pantalla de bienvenida) | Pública |
-| `/discovery` | Chat de descubrimiento con HANDEV AI | Pública |
-| `/activate` | Pantalla de pago / activación ($20) — crea tu cuenta de cliente acá | Pública |
+| `/` | Welcome | Pública |
+| `/discovery` | Chat de descubrimiento con Headev AI | Pública |
+| `/activate` | Pago / activación — crea tu cuenta de cliente | Pública |
 | `/login` | Iniciar sesión (cliente o developer) | Pública |
-| `/portal` | Perfil del cliente + panel de proyectos | Solo cliente logueado (si no, redirige a `/login`) |
-| `/dashboard` | Developer Command Center | Solo developer logueado (si no, redirige a `/login`) |
+| `/portal` | Perfil del cliente + panel de proyectos | Solo cliente logueado |
+| `/dashboard` | Developer Command Center | Solo developer logueado |
 
-## Estructura del proyecto
+### Estructura del proyecto
 
 ```
 handev-app/
-├── index.html
-├── package.json
-├── vite.config.js            ← proxy /api → servidor local (puerto 8787)
-├── tailwind.config.js       ← tokens de marca (colores, fuentes, sombras)
-├── postcss.config.js
-├── .env.example               ← copiar a .env con tu ANTHROPIC_API_KEY
-├── public/assets/            ← logo real (PNG)
-├── server/
-│   ├── index.js                ← backend Express: Claude + auth + endpoints de proyectos
-│   ├── auth.js                  ← hash de contraseñas + tokens (JWT)
-│   ├── store.js                 ← persistencia de proyectos (archivo JSON)
-│   ├── users-store.js           ← persistencia de usuarios (archivo JSON)
-│   └── data/                    ← projects.json, users.json — se generan solos (.gitignore)
+├── server/               ← backend Express: Claude + auth + endpoints
 ├── src/
-│   ├── main.jsx               ← entry point + router + AuthProvider
-│   ├── App.jsx                ← rutas + protección por rol
-│   ├── index.css              ← importa tokens + Tailwind
-│   ├── styles/tokens.css      ← fuentes pixel + variables CSS
-│   ├── lib/auth.jsx            ← contexto de sesión (useAuth)
-│   ├── components/
-│   │   ├── logo/HandevLogo.jsx
-│   │   └── ui/ (Button, Field, Card, StateChip)
-│   └── pages/
-│       ├── Welcome.jsx
-│       ├── DiscoveryChat.jsx
-│       ├── PaymentActivation.jsx
-│       ├── Login.jsx
-│       ├── ClientPortal.jsx
-│       └── DeveloperDashboard.jsx
+│   ├── pages/            ← Welcome, DiscoveryChat, PaymentActivation, Login, ClientPortal, DeveloperDashboard
+│   ├── components/       ← Logo + UI (Button, Field, Card, StateChip)
+│   ├── lib/auth.jsx      ← contexto de sesión
+│   └── styles/           ← tokens de marca
+├── public/assets/        ← logo
+└── .env.example
 ```
 
-## Qué es real y qué es "de mentira" todavía
+### ✅ Qué ya es real
 
-Ya conectado a un backend real (ver `server/`):
+- Chat de Discovery conectado a Claude de verdad — al terminar, redirige a `/activate` con el resumen del proyecto.
+- Login real con contraseñas hasheadas (bcrypt) y sesiones por token (JWT).
+- Rutas protegidas por rol (`/portal`, `/dashboard`).
+- Los proyectos activados se guardan de verdad y se listan por cliente logueado.
 
-- El chat de Discovery (`/discovery`) llama a Claude de verdad, y cuando termina el relevamiento (`done: true`) redirige solo a `/activate`, pasándole el nombre y resumen del proyecto que salieron de la conversación.
-- **Login real** con contraseñas hasheadas (bcrypt) y sesiones por token (JWT):
-  - **Cliente**: la cuenta se crea sola en `/activate`, al activar tu primer proyecto (email + contraseña). Si ya tenías cuenta con ese email, te loguea en vez de duplicarla.
-  - **Developer**: una única cuenta, sembrada desde `HANDEV_ADMIN_EMAIL`/`HANDEV_ADMIN_PASSWORD` en `.env` — no hay alta pública para este rol.
-  - `/portal` y `/dashboard` están protegidas: sin sesión (o con el rol que no corresponde), `App.jsx` te redirige a `/login`.
-- Al "activar" el proyecto en `/activate`, se guarda de verdad en `server/data/projects.json` (vía `POST /api/projects`), asociado a tu cuenta (`clientId`).
-- El Portal de Cliente (`/portal`, pestaña "Proyectos") ya no muestra los dos proyectos de ejemplo (`Spa Lumen`, `Landing de campaña`): lista **tus** proyectos reales (`GET /api/projects` filtra por el cliente logueado). Si todavía no activaste ninguno, muestra un estado vacío. El Developer Dashboard, en cambio, vería todos los proyectos de todos los clientes con ese mismo endpoint (la UI del dashboard todavía no está cableada a esto — ver abajo).
+### 🚧 Qué sigue siendo mock
 
-Lo que sigue siendo mock:
+- El pago simula el estado "processing", no cobra de verdad todavía.
+- Los datos que muestra el Developer Dashboard (leads, proyectos, stats) siguen siendo de ejemplo.
+- Pestañas de "Pagos"/"Mensajes" y opciones de configuración del portal del cliente.
 
-- El pago (`PaymentActivation.jsx`) simula el estado "processing" con un `setTimeout`, no cobra nada de verdad (el proyecto sí se guarda igual, aunque no se haya cobrado nada real).
-- Los leads, proyectos y pagos que se **ven** en el Developer Dashboard (`LEADS`, `PROJECTS`, `STATS`) siguen siendo arrays hardcodeados — aunque la ruta ya está protegida con login real, el contenido que muestra todavía es de mentira. Lo mismo con las pestañas "Pagos"/"Mensajes" y las opciones de "Editar datos personales"/"Método de pago"/"Notificaciones" del portal del cliente.
-
-Cuando quieras seguir conectando backend real, esos son los puntos exactos donde reemplazar mock data por llamadas a tu API.
-
-## Deploy (cuando quieras publicarlo)
+### 📦 Deploy
 
 ```bash
 npm run build
 ```
-Esto genera una carpeta `dist/` con el **frontend**, lista para subir a Vercel, Netlify, o cualquier hosting estático.
 
-⚠️ Esos hostings solo sirven archivos estáticos: **no corren `server/index.js`**. Para que `/discovery`, el login y `/portal`/`/dashboard` funcionen en producción, desplegá `server/index.js` aparte (Render, Railway, Fly.io, una función serverless, etc.) con `ANTHROPIC_API_KEY`, `JWT_SECRET`, `HANDEV_ADMIN_EMAIL` y `HANDEV_ADMIN_PASSWORD` configuradas ahí (un `JWT_SECRET` distinto al de tu compu), y apuntá el proxy/URL del frontend a esa dirección en vez de `localhost:8787`.
+Genera `dist/` con el frontend, listo para Vercel, Netlify, etc.
 
-⚠️ Además, `server/data/*.json` (usuarios y proyectos) es un archivo en el disco del server — funciona bien para probar, pero no sobrevive a un redeploy en la mayoría de los hostings sin disco persistente, y no está pensado para tráfico concurrente real. Antes de tener clientes de verdad, migrá esto a una base de datos (Postgres, etc.).
+> ⚠️ Esos hostings solo sirven archivos estáticos — no corren `server/index.js`. Para producción, desplegá el backend aparte (Render, Railway, Fly.io) con las variables de entorno configuradas, y migrá `server/data/*.json` a una base de datos real (Postgres, etc.) antes de tener clientes de verdad.
 
-## Comandos disponibles
+### 📜 Comandos disponibles
 
 | Comando | Qué hace |
 |---|---|
-| `npm run dev` | Corre **frontend + backend** juntos, con hot reload |
-| `npm run dev:client` | Corre solo el frontend (Vite) |
-| `npm run dev:server` | Corre solo el backend (API de Claude) |
-| `npm run build` | Genera la versión de producción del frontend en `dist/` |
-| `npm run preview` | Sirve localmente la build de producción, para probarla antes de publicar |
+| `npm run dev` | Frontend + backend juntos, con hot reload |
+| `npm run dev:client` | Solo el frontend (Vite) |
+| `npm run dev:server` | Solo el backend (API de Claude) |
+| `npm run build` | Build de producción del frontend en `dist/` |
+| `npm run preview` | Sirve localmente la build de producción |
+
+---
+
+<div align="center">
+
+**Tu idea. Nuestra tecnología. Un proyecto real.**
+
+</div>
